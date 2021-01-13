@@ -17,6 +17,8 @@ def main():
         'Огненный заряд'
     ]
 
+    three_random_skills = random.sample(skills_list, 3)
+
     context = {
         'first_name': fake.first_name(),
         'last_name': fake.last_name(),
@@ -27,9 +29,9 @@ def main():
         'endurance': random.randint(8, 14),
         'intelligence': random.randint(8, 14),
         'luck': random.randint(8, 14),
-        'skill_1': random.choice(skills_list),
-        'skill_2': random.choice(skills_list),
-        'skill_3': random.choice(skills_list)
+        'skill_1': three_random_skills[0],
+        'skill_2': three_random_skills[1],
+        'skill_3': three_random_skills[2]
     }
 
     file_operations.render_template('charsheet.svg', 'result.svg', context)
