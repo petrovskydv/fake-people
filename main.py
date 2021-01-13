@@ -1,5 +1,6 @@
 import file_operations
 from faker import Faker
+import random
 
 fake = Faker("ru_RU")
 
@@ -8,11 +9,11 @@ context = {
     'last_name': fake.last_name(),
     'job': fake.job(),
     'town': fake.city(),
-    'strength': '',
-    'agility': '',
-    'endurance': '',
-    'intelligence': '',
-    'luck': '',
+    'strength': random.randint(8, 14),
+    'agility': random.randint(8, 14),
+    'endurance': random.randint(8, 14),
+    'intelligence': random.randint(8, 14),
+    'luck': random.randint(8, 14),
     'skill_1': '',
     'skill_2': '',
     'skill_3': ''
