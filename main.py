@@ -1,7 +1,9 @@
-import file_operations
-from faker import Faker
 import random
 import os
+
+from faker import Faker
+
+import file_operations
 
 
 def generate_questionnaire(skills_list, alphabet, example_file, result_file):
@@ -73,12 +75,11 @@ def main():
     example_file = 'src/charsheet.svg'
     destination_path = 'ouput'
     if not os.path.exists(destination_path):
-        print('папки нет, создадим ее')
         os.mkdir(destination_path)
 
-    for number_questionnaire in range(3):
+    for number_questionnaire in range(10):
         name_result_file = 'result{}.svg'.format(number_questionnaire)
-        result_file = os.path.join(destination_path,name_result_file)
+        result_file = os.path.join(destination_path, name_result_file)
         generate_questionnaire(skills_list, alphabet, example_file, result_file)
 
 
