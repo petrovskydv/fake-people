@@ -3,9 +3,35 @@ from faker import Faker
 import random
 
 
-def main():
+def generate_questionnaire(skills_list, alphabet, example_file, result_file):
     fake = Faker("ru_RU")
 
+    three_random_skills = random.sample(skills_list, 3)
+    runic_skills = []
+    for skill in three_random_skills:
+        for symbol in skill:
+            skill = skill.replace(symbol, alphabet[symbol])
+        runic_skills.append(skill)
+
+    context = {
+        'first_name': fake.first_name(),
+        'last_name': fake.last_name(),
+        'job': fake.job(),
+        'town': fake.city(),
+        'strength': random.randint(8, 14),
+        'agility': random.randint(8, 14),
+        'endurance': random.randint(8, 14),
+        'intelligence': random.randint(8, 14),
+        'luck': random.randint(8, 14),
+        'skill_1': runic_skills[0],
+        'skill_2': runic_skills[1],
+        'skill_3': runic_skills[2]
+    }
+
+    file_operations.render_template(example_file, result_file, context)
+
+
+def main():
     skills_list = [
         'Стремительный прыжок',
         'Электрический выстрел',
@@ -43,30 +69,10 @@ def main():
         ' ': ' '
     }
 
-    three_random_skills = random.sample(skills_list, 3)
-    runic_skills = []
-    for skill in three_random_skills:
-        for symbol in skill:
-            skill = skill.replace(symbol, alphabet[symbol])
-        runic_skills.append(skill)
+    example_file = 'charsheet.svg'
+    result_file = 'result.svg'
 
-
-    context = {
-        'first_name': fake.first_name(),
-        'last_name': fake.last_name(),
-        'job': fake.job(),
-        'town': fake.city(),
-        'strength': random.randint(8, 14),
-        'agility': random.randint(8, 14),
-        'endurance': random.randint(8, 14),
-        'intelligence': random.randint(8, 14),
-        'luck': random.randint(8, 14),
-        'skill_1': runic_skills[0],
-        'skill_2': runic_skills[1],
-        'skill_3': runic_skills[2]
-    }
-
-    file_operations.render_template('charsheet.svg', 'result.svg', context)
+    generate_questionnaire(skills_list, alphabet, example_file, result_file)
 
 
 if __name__ == '__main__':
