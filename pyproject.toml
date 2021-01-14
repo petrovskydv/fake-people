@@ -10,5 +10,5 @@ name = "fake-people"
 version = "0.1.0"
 [tool.poetry.dependencies]
 Faker = "^4.0"
-python = "^3.7"
+python = "^3.8"
 [tool.poetry.dev-dependencies]
