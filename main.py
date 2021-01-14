@@ -69,10 +69,11 @@ def main():
         ' ': ' '
     }
 
-    example_file = 'charsheet.svg'
-    result_file = 'result.svg'
+    example_file = 'src/charsheet.svg'
 
-    generate_questionnaire(skills_list, alphabet, example_file, result_file)
+    for number_questionnaire in range(3):
+        result_file = 'ouput/result{}.svg'.format(number_questionnaire)
+        generate_questionnaire(skills_list, alphabet, example_file, result_file)
 
 
 if __name__ == '__main__':
