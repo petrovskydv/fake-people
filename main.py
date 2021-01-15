@@ -6,7 +6,8 @@ from faker import Faker
 import file_operations
 
 
-def generate_questionnaire(skills_list, alphabet, example_file, result_file):
+def generate_questionnaire(skills_list, lower_limit_level, upper_limit_level, alphabet, example_filepath,
+                           result_filepath):
     fake = Faker("ru_RU")
 
     three_random_skills = random.sample(skills_list, 3)
@@ -16,22 +17,29 @@ def generate_questionnaire(skills_list, alphabet, example_file, result_file):
             skill = skill.replace(symbol, alphabet[symbol])
         runic_skills.append(skill)
 
+    if random.randint(1, 2) == 1:
+        first_name = fake.first_name_male()
+        last_name = fake.last_name_male()
+    else:
+        first_name = fake.first_name_female()
+        last_name = fake.last_name_female()
+
+    name_skills = ['strength', 'agility', 'endurance', 'intelligence', 'luck']
+
     context = {
-        'first_name': fake.first_name(),
-        'last_name': fake.last_name(),
+        'first_name': first_name,
+        'last_name': last_name,
         'job': fake.job(),
-        'town': fake.city(),
-        'strength': random.randint(8, 14),
-        'agility': random.randint(8, 14),
-        'endurance': random.randint(8, 14),
-        'intelligence': random.randint(8, 14),
-        'luck': random.randint(8, 14),
-        'skill_1': runic_skills[0],
-        'skill_2': runic_skills[1],
-        'skill_3': runic_skills[2]
+        'town': fake.city()
     }
 
-    file_operations.render_template(example_file, result_file, context)
+    for skill in name_skills:
+        context[skill] = random.randint(lower_limit_level, upper_limit_level)
+
+    for skill_number, skill in enumerate(runic_skills):
+        context['skill_{}'.format(skill_number + 1)] = skill
+
+    file_operations.render_template(example_filepath, result_filepath, context)
 
 
 def main():
@@ -72,15 +80,19 @@ def main():
         ' ': ' '
     }
 
-    example_file = 'src/charsheet.svg'
-    destination_path = 'output'
-    if not os.path.exists(destination_path):
-        os.mkdir(destination_path)
+    count_questionnaires = 10
+    lower_limit_level = 8
+    upper_limit_level = 14
 
-    for number_questionnaire in range(10):
-        name_result_file = 'result{}.svg'.format(number_questionnaire)
-        result_file = os.path.join(destination_path, name_result_file)
-        generate_questionnaire(skills_list, alphabet, example_file, result_file)
+    example_filepath = 'src/charsheet.svg'
+    destination_path = 'output'
+    os.makedirs(destination_path, exist_ok=True)
+
+    for number_questionnaire in range(count_questionnaires):
+        result_filename = 'result{}.svg'.format(number_questionnaire)
+        result_filepath = os.path.join(destination_path, result_filename)
+        generate_questionnaire(skills_list, lower_limit_level, upper_limit_level, alphabet, example_filepath,
+                               result_filepath)
 
 
 if __name__ == '__main__':
