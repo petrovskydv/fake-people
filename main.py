@@ -6,7 +6,7 @@ from faker import Faker
 import file_operations
 
 
-def generate_questionnaire(skills_list, lower_limit_level, upper_limit_level, alphabet, example_filepath,
+def generate_questionnaire(skills_list, lower_limit_level, upper_limit_level, name_skills, alphabet, example_filepath,
                            result_filepath):
     fake = Faker("ru_RU")
 
@@ -23,8 +23,6 @@ def generate_questionnaire(skills_list, lower_limit_level, upper_limit_level, al
     else:
         first_name = fake.first_name_female()
         last_name = fake.last_name_female()
-
-    name_skills = ['strength', 'agility', 'endurance', 'intelligence', 'luck']
 
     context = {
         'first_name': first_name,
@@ -53,6 +51,8 @@ def main():
         'Ледяной выстрел',
         'Огненный заряд'
     ]
+
+    name_skills = ['strength', 'agility', 'endurance', 'intelligence', 'luck']
 
     alphabet = {
         'а': 'а͠', 'б': 'б̋', 'в': 'в͒͠',
@@ -91,8 +91,8 @@ def main():
     for number_questionnaire in range(count_questionnaires):
         result_filename = 'result{}.svg'.format(number_questionnaire)
         result_filepath = os.path.join(destination_path, result_filename)
-        generate_questionnaire(skills_list, lower_limit_level, upper_limit_level, alphabet, example_filepath,
-                               result_filepath)
+        generate_questionnaire(skills_list, lower_limit_level, upper_limit_level, name_skills, alphabet,
+                               example_filepath, result_filepath)
 
 
 if __name__ == '__main__':
