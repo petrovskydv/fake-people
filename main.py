@@ -73,7 +73,7 @@ def main():
     }
 
     example_file = 'src/charsheet.svg'
-    destination_path = 'ouput'
+    destination_path = 'output'
     if not os.path.exists(destination_path):
         os.mkdir(destination_path)
 
