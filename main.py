@@ -10,13 +10,6 @@ def generate_questionnaire(skills_list, lower_limit_level, upper_limit_level, na
                            result_filepath):
     fake = Faker("ru_RU")
 
-    three_random_skills = random.sample(skills_list, 3)
-    runic_skills = []
-    for skill in three_random_skills:
-        for symbol in skill:
-            skill = skill.replace(symbol, alphabet[symbol])
-        runic_skills.append(skill)
-
     if random.randint(1, 2) == 1:
         first_name = fake.first_name_male()
         last_name = fake.last_name_male()
@@ -33,6 +26,13 @@ def generate_questionnaire(skills_list, lower_limit_level, upper_limit_level, na
 
     for skill in name_skills:
         context[skill] = random.randint(lower_limit_level, upper_limit_level)
+
+    three_random_skills = random.sample(skills_list, 3)
+    runic_skills = []
+    for skill in three_random_skills:
+        for symbol in skill:
+            skill = skill.replace(symbol, alphabet[symbol])
+        runic_skills.append(skill)
 
     for skill_number, skill in enumerate(runic_skills):
         context['skill_{}'.format(skill_number + 1)] = skill
