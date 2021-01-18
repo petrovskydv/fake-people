@@ -85,8 +85,8 @@ def main():
     destination_path = 'output'
     os.makedirs(destination_path, exist_ok=True)
 
-    for number_questionnaire in range(questionnaires_count):
-        result_filename = 'result{}.svg'.format(number_questionnaire)
+    for questionnaire_number in range(questionnaires_count):
+        result_filename = 'result{}.svg'.format(questionnaire_number)
         result_filepath = os.path.join(destination_path, result_filename)
         generate_questionnaire(three_random_skills, lower_limit_level, upper_limit_level, skills_names,
                                example_filepath, result_filepath)
