@@ -6,16 +6,14 @@ from faker import Faker
 import file_operations
 
 
-def generate_questionnaire(skills_list, lower_limit_level, upper_limit_level, name_skills, alphabet, example_filepath,
+def generate_questionnaire(skills_list, lower_limit_level, upper_limit_level, skills_names, example_filepath,
                            result_filepath):
     fake = Faker("ru_RU")
 
-    if random.randint(1, 2) == 1:
-        first_name = fake.first_name_male()
-        last_name = fake.last_name_male()
-    else:
-        first_name = fake.first_name_female()
-        last_name = fake.last_name_female()
+    first_name, last_name = random.choice([
+        [fake.first_name_male(), fake.last_name_male()],
+        [fake.first_name_female(), fake.last_name_female()],
+    ])
 
     context = {
         'first_name': first_name,
@@ -24,23 +22,17 @@ def generate_questionnaire(skills_list, lower_limit_level, upper_limit_level, na
         'town': fake.city()
     }
 
-    for skill in name_skills:
+    for skill in skills_names:
         context[skill] = random.randint(lower_limit_level, upper_limit_level)
 
-    three_random_skills = random.sample(skills_list, 3)
-    runic_skills = []
-    for skill in three_random_skills:
-        for symbol in skill:
-            skill = skill.replace(symbol, alphabet[symbol])
-        runic_skills.append(skill)
-
-    for skill_number, skill in enumerate(runic_skills):
+    for skill_number, skill in enumerate(skills_list):
         context['skill_{}'.format(skill_number + 1)] = skill
 
     file_operations.render_template(example_filepath, result_filepath, context)
 
 
 def main():
+    skills_names = ['strength', 'agility', 'endurance', 'intelligence', 'luck']
     skills_list = [
         'Стремительный прыжок',
         'Электрический выстрел',
@@ -51,9 +43,6 @@ def main():
         'Ледяной выстрел',
         'Огненный заряд'
     ]
-
-    name_skills = ['strength', 'agility', 'endurance', 'intelligence', 'luck']
-
     alphabet = {
         'а': 'а͠', 'б': 'б̋', 'в': 'в͒͠',
         'г': 'г͒͠', 'д': 'д̋', 'е': 'е͠',
@@ -80,7 +69,15 @@ def main():
         ' ': ' '
     }
 
-    count_questionnaires = 10
+    runic_skills = []
+    for skill in skills_list:
+        for symbol in skill:
+            skill = skill.replace(symbol, alphabet[symbol])
+        runic_skills.append(skill)
+
+    three_random_skills = random.sample(runic_skills, 3)
+
+    questionnaires_count = 10
     lower_limit_level = 8
     upper_limit_level = 14
 
@@ -88,10 +85,10 @@ def main():
     destination_path = 'output'
     os.makedirs(destination_path, exist_ok=True)
 
-    for number_questionnaire in range(count_questionnaires):
+    for number_questionnaire in range(questionnaires_count):
         result_filename = 'result{}.svg'.format(number_questionnaire)
         result_filepath = os.path.join(destination_path, result_filename)
-        generate_questionnaire(skills_list, lower_limit_level, upper_limit_level, name_skills, alphabet,
+        generate_questionnaire(three_random_skills, lower_limit_level, upper_limit_level, skills_names,
                                example_filepath, result_filepath)
 
 
